@@ -18,13 +18,6 @@ jobs:
       run: |
         git clone --recursive https://github.com/DK22Pac/plugin-sdk.git C:\plugin-sdk
 
-    - name: Prebuilt Libs Indir ve Yerlestir
-      shell: cmd
-      run: |
-        mkdir C:\plugin-sdk\output\lib
-        curl -L -o C:\plugin-sdk\output\lib\plugin.lib https://github.com/DK22Pac/plugin-sdk/raw/master/output/lib/plugin.lib || true
-        curl -L -o C:\plugin-sdk\output\lib\plugin_sa.lib https://github.com/DK22Pac/plugin-sdk/raw/master/output/lib/plugin_sa.lib || true
-
     - name: Visual Studio C++ Ortamini Ayarla (x86)
       uses: ilammy/msvc-dev-cmd@v1
       with:
