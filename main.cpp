@@ -11,7 +11,7 @@ public:
         Events::initGameRegisterEvent [] {
             Events::vehicleRenderEvent += [](CVehicle* vehicle) {
                 if (vehicle && vehicle->m_pDriver == FindPlayerPed()) {
-                    // Yüksek FPS'te kilitlenen direksiyon açısını 30 FPS normuna böler
+                    // Yüksek FPS'te kilitlenen direksiyon açısını normalize eder
                     if (CTimer::ms_fTimeStep < 1.0f && CTimer::ms_fTimeStep > 0.0f) {
                         vehicle->m_fSteerAngle *= (1.0f / CTimer::ms_fTimeStep) * 0.85f;
                     }
