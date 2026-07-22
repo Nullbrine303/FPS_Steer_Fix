@@ -22,11 +22,10 @@ include_directories(
     ${PLUGIN_SDK_DIR}/safetyhook
 )
 
-# Kütüphane arama yolları
+# Lib arama yolları
 link_directories(
     ${PLUGIN_SDK_DIR}/output/lib
-    ${PLUGIN_SDK_DIR}/build/Release
-    ${PLUGIN_SDK_DIR}/build/plugin_sa/Release
+    ${PLUGIN_SDK_DIR}/lib
 )
 
 add_library(FPS_Steer_Fix SHARED main.cpp)
@@ -40,7 +39,7 @@ target_compile_definitions(FPS_Steer_Fix PRIVATE
     RW=1
 )
 
-# Statik kütüphaneleri projeye bağlama (LNK2019 çözüm adımı)
+# Statik kütüphaneleri bağlama
 target_link_libraries(FPS_Steer_Fix PRIVATE plugin plugin_sa)
 
 if(MSVC)
