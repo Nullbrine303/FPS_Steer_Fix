@@ -9,10 +9,11 @@ if(NOT DEFINED PLUGIN_SDK_DIR)
     set(PLUGIN_SDK_DIR "C:/plugin-sdk")
 endif()
 
-# Plugin-SDK ve RenderWare Dizinleri
+# Plugin-SDK ve RenderWare Başlık Yolları
 include_directories(
     ${PLUGIN_SDK_DIR}/plugin_sa
     ${PLUGIN_SDK_DIR}/plugin_sa/game_sa
+    ${PLUGIN_SDK_DIR}/plugin_sa/game_sa/rw        # <-- Hatanın çözümü olan eksik yol eklendi
     ${PLUGIN_SDK_DIR}/plugin_sa/game_sa/enums
     ${PLUGIN_SDK_DIR}/plugin_common
     ${PLUGIN_SDK_DIR}/plugin_common/game
@@ -31,8 +32,8 @@ add_library(FPS_Steer_Fix SHARED main.cpp)
 
 set_target_properties(FPS_Steer_Fix PROPERTIES SUFFIX ".asi")
 
-# GTASA ve RenderWare (RwObjects) Ön İşlemci Makroları
-target_compile_definitions(FPS_Steer_Fix PRIVATE GTASA _CRT_SECURE_NO_WARNINGS RwObjects RW)
+# GTASA ve RenderWare Makroları
+target_compile_definitions(FPS_Steer_Fix PRIVATE GTASA _CRT_SECURE_NO_WARNINGS RwObjects)
 
 if(MSVC)
     target_compile_options(FPS_Steer_Fix PRIVATE /std:c++latest)
