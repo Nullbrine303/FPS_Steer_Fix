@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(FPS_Steer_Fix CXX)
 
+# SafetyHook ve Modern C++23 Desteği
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -8,6 +9,7 @@ if(NOT DEFINED PLUGIN_SDK_DIR)
     set(PLUGIN_SDK_DIR "C:/plugin-sdk")
 endif()
 
+# Plugin-SDK ve RenderWare Dizinleri
 include_directories(
     ${PLUGIN_SDK_DIR}/plugin_sa
     ${PLUGIN_SDK_DIR}/plugin_sa/game_sa
@@ -29,8 +31,8 @@ add_library(FPS_Steer_Fix SHARED main.cpp)
 
 set_target_properties(FPS_Steer_Fix PROPERTIES SUFFIX ".asi")
 
-# RenderWare nesne tanımlarını aktif eden Kritik Makro: RwObjects
-target_compile_definitions(FPS_Steer_Fix PRIVATE GTASA _CRT_SECURE_NO_WARNINGS RwObjects)
+# GTASA ve RenderWare (RwObjects) Ön İşlemci Makroları
+target_compile_definitions(FPS_Steer_Fix PRIVATE GTASA _CRT_SECURE_NO_WARNINGS RwObjects RW)
 
 if(MSVC)
     target_compile_options(FPS_Steer_Fix PRIVATE /std:c++latest)
