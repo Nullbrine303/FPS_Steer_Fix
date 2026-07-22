@@ -13,20 +13,28 @@ jobs:
     - name: Depoyu Cek
       uses: actions/checkout@v4
 
-    - name: Plugin-SDK ve Bagimliliklari Indir
+    - name: Plugin-SDK Indir
       shell: cmd
       run: |
-        git clone --depth 1 https://github.com/DK22Pac/plugin-sdk.git C:\plugin-sdk
+        git clone --recursive https://github.com/DK22Pac/plugin-sdk.git C:\plugin-sdk
 
     - name: Visual Studio C++ Ortamini Ayarla (x86)
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x86
 
+    - name: MSBuild Kurulumu
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Plugin-SDK Derle (GtaSa.sln)
+      shell: cmd
+      run: |
+        msbuild C:\plugin-sdk\GtaSa.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
     - name: main.cpp Derleme (ASI Uretme)
       shell: cmd
       run: |
-        cl.exe /O2 /LD /EHsc /std:c++17 main.cpp /I C:\plugin-sdk\plugin_sa /I C:\plugin-sdk\plugin_common /I C:\plugin-sdk\shared /I C:\plugin-sdk\shared\game /link /LIBPATH:C:\plugin-sdk\output\lib /OUT:FPS_Steer_Fix.asi
+        cl.exe /O2 /LD /EHsc /std:c++latest main.cpp /I C:\plugin-sdk\plugin_sa /I C:\plugin-sdk\plugin_common /I C:\plugin-sdk\shared /I C:\plugin-sdk\injector /link /LIBPATH:C:\plugin-sdk\output\lib plugin.lib /OUT:FPS_Steer_Fix.asi
 
     - name: ASI Dosyasini Yukle
       uses: actions/upload-artifact@v4
