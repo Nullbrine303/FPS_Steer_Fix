@@ -8,6 +8,7 @@ if(NOT DEFINED PLUGIN_SDK_DIR)
     set(PLUGIN_SDK_DIR "C:/plugin-sdk")
 endif()
 
+# Header Dizinleri
 include_directories(
     ${PLUGIN_SDK_DIR}/plugin_sa
     ${PLUGIN_SDK_DIR}/plugin_sa/game_sa
@@ -22,13 +23,15 @@ include_directories(
     ${PLUGIN_SDK_DIR}/safetyhook
 )
 
-# Lib arama yolları
-link_directories(
-    ${PLUGIN_SDK_DIR}/output/lib
-    ${PLUGIN_SDK_DIR}/lib
+# Plugin-SDK'nin C++ kaynak dosyalarini derlemeye dahil et
+file(GLOB_RECURSE SDK_SOURCES 
+    "${PLUGIN_SDK_DIR}/plugin_sa/*.cpp"
+    "${PLUGIN_SDK_DIR}/plugin_common/*.cpp"
+    "${PLUGIN_SDK_DIR}/shared/*.cpp"
 )
 
-add_library(FPS_Steer_Fix SHARED main.cpp)
+# Hedef ASI kütüphanesi
+add_library(FPS_Steer_Fix SHARED main.cpp ${SDK_SOURCES})
 
 set_target_properties(FPS_Steer_Fix PROPERTIES SUFFIX ".asi")
 
@@ -38,9 +41,6 @@ target_compile_definitions(FPS_Steer_Fix PRIVATE
     RwObjects=1 
     RW=1
 )
-
-# Statik kütüphaneleri bağlama
-target_link_libraries(FPS_Steer_Fix PRIVATE plugin plugin_sa)
 
 if(MSVC)
     target_compile_options(FPS_Steer_Fix PRIVATE /std:c++latest)
