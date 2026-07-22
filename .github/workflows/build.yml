@@ -15,16 +15,30 @@ jobs:
 
     - name: Plugin-SDK Indir
       run: |
-        git clone https://github.com/DK22Pac/plugin-sdk.git C:/plugin-sdk
+        git clone https://github.com/DK22Pac/plugin-sdk.git C:\plugin-sdk
+
+    - name: Premake5 Indir ve Plugin-SDK Derle
+      shell: cmd
+      run: |
+        curl -sL https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-windows.zip -o C:\plugin-sdk\premake.zip
+        tar -xf C:\plugin-sdk\premake.zip -C C:\plugin-sdk
+        cd /d C:\plugin-sdk
+        premake5 vs2022
 
     - name: Visual Studio C++ Ortamini Ayarla (x86)
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x86
 
-    - name: C++ Derleme
+    - name: Plugin-SDK Lib Derleme (MSBuild)
+      shell: cmd
       run: |
-        cl.exe /O2 /LD /EHsc /std:c++17 main.cpp /I"C:/plugin-sdk/plugin_sa" /I"C:/plugin-sdk/plugin_common" /link /LIBPATH:"C:/plugin-sdk/output/lib" plugin.lib /OUT:FPS_Steer_Fix.asi
+        msbuild C:\plugin-sdk\GtaSa.sln /p:Configuration=Release /p:Platform=Win32
+
+    - name: main.cpp Derleme (ASI Uretme)
+      shell: cmd
+      run: |
+        cl.exe /O2 /LD /EHsc /std:c++17 main.cpp /I C:\plugin-sdk\plugin_sa /I C:\plugin-sdk\plugin_common /link /LIBPATH:C:\plugin-sdk\output\lib plugin.lib /OUT:FPS_Steer_Fix.asi
 
     - name: ASI Dosyasini Yukle
       uses: actions/upload-artifact@v4
