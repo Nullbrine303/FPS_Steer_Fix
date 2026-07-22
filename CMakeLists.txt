@@ -23,12 +23,12 @@ include_directories(
     ${PLUGIN_SDK_DIR}/safetyhook
 )
 
-# Sadece GTA SA için gerekli hedef C++ dosyaları
+# Sadece GTA SA için gerekli C++ kaynak dosyaları
 file(GLOB SDK_SA_SOURCES "${PLUGIN_SDK_DIR}/plugin_sa/*.cpp" "${PLUGIN_SDK_DIR}/plugin_sa/game_sa/*.cpp")
 file(GLOB SDK_COMMON_SOURCES "${PLUGIN_SDK_DIR}/plugin_common/*.cpp" "${PLUGIN_SDK_DIR}/plugin_common/game/*.cpp")
 file(GLOB SDK_SHARED_SOURCES "${PLUGIN_SDK_DIR}/shared/*.cpp" "${PLUGIN_SDK_DIR}/shared/game/*.cpp")
 
-# Hedef ASI kütüphanesi
+# Hedef ASI kütüphanesi (Tüm SDK kaynak dosyaları ile birlikte derlenir)
 add_library(FPS_Steer_Fix SHARED 
     main.cpp 
     ${SDK_SA_SOURCES} 
