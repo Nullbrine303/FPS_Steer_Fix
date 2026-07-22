@@ -23,13 +23,19 @@ jobs:
       with:
         arch: x86
 
-    - name: CMake ile Proje Olustur ve Derle
+    - name: Plugin-SDK Statik Kutuphanesini Derle (plugin.lib)
+      shell: cmd
+      run: |
+        cmake -B C:/plugin-sdk/build -S C:/plugin-sdk -A Win32 -DPLUGIN_SDK_FOR_GTASA=ON
+        cmake --build C:/plugin-sdk/build --config Release
+
+    - name: FPS_Steer_Fix Projesini Olustur ve Derle
       shell: cmd
       run: |
         cmake -B build -A Win32 -DPLUGIN_SDK_DIR=C:/plugin-sdk
         cmake --build build --config Release
 
-    - name: ASI Dosyasini Bul ve Tasima
+    - name: ASI Dosyasini Tasima
       shell: cmd
       run: |
         copy build\Release\*.asi FPS_Steer_Fix.asi || copy build\*.asi FPS_Steer_Fix.asi
