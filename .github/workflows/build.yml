@@ -13,22 +13,26 @@ jobs:
     - name: Depoyu Cek
       uses: actions/checkout@v4
 
-    - name: Plugin-SDK Indir (Prebuilt Release)
+    - name: Plugin-SDK Indir
       shell: cmd
       run: |
-        curl -sL https://github.com/DK22Pac/plugin-sdk/releases/download/v1.0/plugin-sdk.zip -o C:\plugin-sdk.zip || curl -sL https://github.com/DK22Pac/plugin-sdk/archive/refs/heads/master.zip -o C:\plugin-sdk.zip
-        powershell -Command "Expand-Archive -Path C:\plugin-sdk.zip -DestinationPath C:\plugin-sdk-temp"
-        for /d %%i in (C:\plugin-sdk-temp\*) do move "%%i" C:\plugin-sdk
+        git clone --recursive https://github.com/DK22Pac/plugin-sdk.git C:\plugin-sdk
 
     - name: Visual Studio C++ Ortamini Ayarla (x86)
       uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x86
 
-    - name: main.cpp Derleme (ASI Uretme)
+    - name: CMake ile Proje Olustur ve Derle
       shell: cmd
       run: |
-        cl.exe /O2 /LD /EHsc /std:c++latest /D "GTASA" /D "_CRT_SECURE_NO_WARNINGS" main.cpp /I C:\plugin-sdk\plugin_sa /I C:\plugin-sdk\plugin_common /I C:\plugin-sdk\shared /I C:\plugin-sdk\shared\game /I C:\plugin-sdk\injector /link /LIBPATH:C:\plugin-sdk\output\lib plugin.lib /OUT:FPS_Steer_Fix.asi || cl.exe /O2 /LD /EHsc /std:c++latest /D "GTASA" /D "_CRT_SECURE_NO_WARNINGS" main.cpp /I C:\plugin-sdk\plugin_sa /I C:\plugin-sdk\plugin_common /I C:\plugin-sdk\shared /I C:\plugin-sdk\shared\game /I C:\plugin-sdk\injector /OUT:FPS_Steer_Fix.asi
+        cmake -B build -A Win32 -DPLUGIN_SDK_DIR=C:/plugin-sdk
+        cmake --build build --config Release
+
+    - name: ASI Dosyasini Bul ve Tasima
+      shell: cmd
+      run: |
+        copy build\Release\*.asi FPS_Steer_Fix.asi || copy build\*.asi FPS_Steer_Fix.asi
 
     - name: ASI Dosyasini Yukle
       uses: actions/upload-artifact@v4
