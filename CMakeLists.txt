@@ -23,7 +23,7 @@ include_directories(
     ${PLUGIN_SDK_DIR}/safetyhook
 )
 
-# bass.lib ve diğer bağımlı kütüphane dizinleri
+# Kütüphane Yolları
 link_directories(
     ${PLUGIN_SDK_DIR}/shared/bass
     ${PLUGIN_SDK_DIR}/shared/lib
@@ -31,12 +31,11 @@ link_directories(
     ${PLUGIN_SDK_DIR}/output/lib
 )
 
-# Sadece GTA SA için gerekli C++ kaynak dosyaları
+# Sadece GTA SA C++ Kaynak Dosyaları
 file(GLOB SDK_SA_SOURCES "${PLUGIN_SDK_DIR}/plugin_sa/*.cpp" "${PLUGIN_SDK_DIR}/plugin_sa/game_sa/*.cpp")
 file(GLOB SDK_COMMON_SOURCES "${PLUGIN_SDK_DIR}/plugin_common/*.cpp" "${PLUGIN_SDK_DIR}/plugin_common/game/*.cpp")
 file(GLOB SDK_SHARED_SOURCES "${PLUGIN_SDK_DIR}/shared/*.cpp" "${PLUGIN_SDK_DIR}/shared/game/*.cpp")
 
-# Hedef ASI kütüphanesi
 add_library(FPS_Steer_Fix SHARED 
     main.cpp 
     ${SDK_SA_SOURCES} 
@@ -46,6 +45,11 @@ add_library(FPS_Steer_Fix SHARED
 
 set_target_properties(FPS_Steer_Fix PROPERTIES SUFFIX ".asi")
 
+# Statik C++ Runtime Kullanımı (Kullanıcı bilgisayarında DLL eksikliği olmaması için)
+set_target_properties(FPS_Steer_Fix PROPERTIES
+    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+)
+
 target_compile_definitions(FPS_Steer_Fix PRIVATE 
     GTASA=1 
     _CRT_SECURE_NO_WARNINGS 
@@ -54,5 +58,5 @@ target_compile_definitions(FPS_Steer_Fix PRIVATE
 )
 
 if(MSVC)
-    target_compile_options(FPS_Steer_Fix PRIVATE /std:c++latest)
+    target_compile_options(FPS_Steer_Fix PRIVATE /std:c++latest /W3)
 endif()
