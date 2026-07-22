@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.15)
+project(FPS_Steer_Fix CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(NOT DEFINED PLUGIN_SDK_DIR)
+    set(PLUGIN_SDK_DIR "C:/plugin-sdk")
+endif()
+
+include_directories(
+    ${PLUGIN_SDK_DIR}/plugin_sa
+    ${PLUGIN_SDK_DIR}/plugin_common
+    ${PLUGIN_SDK_DIR}/shared
+    ${PLUGIN_SDK_DIR}/shared/game
+    ${PLUGIN_SDK_DIR}/injector
+)
+
+link_directories(
+    ${PLUGIN_SDK_DIR}/output/lib
+)
+
+add_library(FPS_Steer_Fix SHARED main.cpp)
+
+set_target_properties(FPS_Steer_Fix PROPERTIES SUFFIX ".asi")
+
+# Gerekli tanimlamalar
+target_compile_definitions(FPS_Steer_Fix PRIVATE GTASA _CRT_SECURE_NO_WARNINGS)
