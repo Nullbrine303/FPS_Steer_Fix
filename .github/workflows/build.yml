@@ -10,22 +10,22 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Depoyu Çek
-      uses: actions/checkout@v3
+    - name: Depoyu Cek
+      uses: actions/checkout@v4
 
     - name: Plugin-SDK Indir
       run: |
         git clone https://github.com/DK22Pac/plugin-sdk.git C:/plugin-sdk
 
-    - name: MSBuild Kurulumu (Visual Studio 2022)
-      uses: microsoft/setup-msbuild@v1.1
+    - name: MSBuild Kurulumu (Visual Studio)
+      uses: microsoft/setup-msbuild@v2
 
     - name: C++ Derleme
       run: |
         cl.exe /O2 /LD /EHsc /std:c++17 main.cpp /I"C:/plugin-sdk/plugin_sa" /I"C:/plugin-sdk/plugin_common" /link /LIBPATH:"C:/plugin-sdk/output/lib" plugin.lib /OUT:FPS_Steer_Fix.asi
 
-    - name: ASI Dosyasini Yükle
-      uses: actions/upload-artifact@v3
+    - name: ASI Dosyasini Yukle
+      uses: actions/upload-artifact@v4
       with:
         name: FPS_Steer_Fix_ASI
         path: FPS_Steer_Fix.asi
