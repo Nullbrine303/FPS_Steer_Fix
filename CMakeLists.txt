@@ -30,7 +30,13 @@ add_library(FPS_Steer_Fix SHARED main.cpp)
 
 set_target_properties(FPS_Steer_Fix PROPERTIES SUFFIX ".asi")
 
-target_compile_definitions(FPS_Steer_Fix PRIVATE GTASA _CRT_SECURE_NO_WARNINGS RwObjects RW)
+# Makrolara değer ataması yapıldı (C1017 hatasının kesin çözümü)
+target_compile_definitions(FPS_Steer_Fix PRIVATE 
+    GTASA=1 
+    _CRT_SECURE_NO_WARNINGS 
+    RwObjects=1 
+    RW=1
+)
 
 if(MSVC)
     target_compile_options(FPS_Steer_Fix PRIVATE /std:c++latest)
