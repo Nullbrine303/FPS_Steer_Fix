@@ -1,3 +1,7 @@
+#define GTASA
+#define RwObjects
+#define RW
+
 #include "plugin.h"
 #include "RenderWare.h"
 #include "CAutomobile.h"
@@ -11,6 +15,7 @@ public:
         Events::initGameRegisterEvent [] {
             Events::vehicleRenderEvent += [](CVehicle* vehicle) {
                 if (vehicle && vehicle->m_pDriver == FindPlayerPed()) {
+                    // Yüksek FPS'te direksiyon kilitlenmesini normalize eder
                     if (CTimer::ms_fTimeStep < 1.0f && CTimer::ms_fTimeStep > 0.0f) {
                         vehicle->m_fSteerAngle *= (1.0f / CTimer::ms_fTimeStep) * 0.85f;
                     }
