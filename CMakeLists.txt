@@ -22,21 +22,26 @@ include_directories(
     ${PLUGIN_SDK_DIR}/safetyhook
 )
 
+# Kütüphane arama yolları
 link_directories(
     ${PLUGIN_SDK_DIR}/output/lib
+    ${PLUGIN_SDK_DIR}/build/Release
+    ${PLUGIN_SDK_DIR}/build/plugin_sa/Release
 )
 
 add_library(FPS_Steer_Fix SHARED main.cpp)
 
 set_target_properties(FPS_Steer_Fix PROPERTIES SUFFIX ".asi")
 
-# Makrolara değer ataması yapıldı (C1017 hatasının kesin çözümü)
 target_compile_definitions(FPS_Steer_Fix PRIVATE 
     GTASA=1 
     _CRT_SECURE_NO_WARNINGS 
     RwObjects=1 
     RW=1
 )
+
+# Statik kütüphaneleri projeye bağlama (LNK2019 çözüm adımı)
+target_link_libraries(FPS_Steer_Fix PRIVATE plugin plugin_sa)
 
 if(MSVC)
     target_compile_options(FPS_Steer_Fix PRIVATE /std:c++latest)
