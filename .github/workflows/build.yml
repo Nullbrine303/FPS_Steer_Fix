@@ -13,13 +13,13 @@ jobs:
     - name: Depoyu Cek
       uses: actions/checkout@v4
 
-    # Plugin-SDK'yi Önbelleğe Al (Cache) - Tekrar derlemeleri 10 saniyeye düşürür
+    # Plugin-SDK'yi Önbelleğe Al (Cache) - Sonraki derlemeleri 10-15 saniyeye düşürür
     - name: Plugin-SDK Cache Kontrolu
       id: cache-sdk
       uses: actions/cache@v4
       with:
         path: C:\plugin-sdk
-        key: plugin-sdk-v143-v2
+        key: plugin-sdk-v143-v3
 
     - name: Plugin-SDK Indir (Eger Cache Yoksa)
       if: steps.cache-sdk.outputs.cache-hit != 'true'
@@ -32,13 +32,13 @@ jobs:
       with:
         arch: x86
 
-    # MSBuild komutu doğru alt klasördeki (plugin_sa) vcxproj dosyasını hedefleyecek şekilde güncellendi
+    # Doğrudan plugin_sa.sln çözüm dosyası hedeflendi (MSB1009 çözümü)
     - name: Plugin-SDK Kutuphanesini Derle (Sadece Ilk Seferde Calisir)
       if: steps.cache-sdk.outputs.cache-hit != 'true'
       shell: cmd
       run: |
-        cd C:\plugin-sdk\plugin_sa
-        msbuild plugin_sa.vcxproj /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+        cd C:\plugin-sdk
+        msbuild plugin_sa.sln /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
 
     - name: FPS_Steer_Fix Projesini Derle
       shell: cmd
